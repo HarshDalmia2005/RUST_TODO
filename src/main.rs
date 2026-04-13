@@ -9,7 +9,9 @@ struct Task{
 }
 
 fn load_tasks() -> Vec<Task> {
-    let contents=std::fs::read_to_string("todo.json");
+    let home = std::env::var("HOME").unwrap();
+    let path=format!("{}/todo.json",home);
+    let contents=std::fs::read_to_string(path);
     match contents {
         Ok(c)=>{
             return serde_json::from_str(&c).unwrap();
@@ -21,8 +23,10 @@ fn load_tasks() -> Vec<Task> {
 }
 
 fn save_tasks(tasks: &Vec<Task>){
+    let home = std::env::var("HOME").unwrap();
+    let path=format!("{}/todo.json",home);
     let json_string=serde_json::to_string_pretty(tasks).unwrap();
-    std::fs::write("todo.json",json_string).unwrap();
+    std::fs::write(path,json_string).unwrap();
 }
 
 fn print_list(tasks: &Vec<Task>){
