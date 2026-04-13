@@ -97,6 +97,12 @@ fn main() {
         }
         save_tasks(&tsk);
         print_list(&tsk);
+    }else{
+        println!("Usage: todo <command> <task name>\n");
+        println!("Commands:\nadd\ndelete\ndone");
+        println!("\nExample: todo add <task name>");
+        println!("Example: todo delete <task name>");
+        println!("Example: todo done <task name>");
     }
     
 }
