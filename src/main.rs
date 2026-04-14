@@ -58,7 +58,7 @@ fn print_list(tasks: &Vec<Task>){
 
     for (i, task) in tasks.iter().enumerate() {
         if task.done {
-            print!("  {}. \x1b[32m✔\x1b[0m  {}", i, task.name);
+            print!("  {}.  \x1b[32m✔\x1b[0m  {}", i, task.name);
         } else {
             print!("  {}. [ ] {}", i, task.name);
             print_due(&task.due, today);
@@ -80,12 +80,14 @@ fn print_help() {
     println!("    todo add --repeat N <task>         add repeating task (every N days)");
     println!("    todo done <id> [id2 ...]           mark task(s) as done");
     println!("    todo delete <id> [id2 ...]         delete task(s)");
+    println!("    todo delete all                    delete ALL tasks");
     println!("\n  EXAMPLES:");
     println!("    todo add \"buy milk\"");
     println!("    todo add --due 2026-04-20 \"dentist\"");
     println!("    todo add --repeat 7 \"weekly review\"");
     println!("    todo done 0 2");
-    println!("    todo delete 1\n");
+    println!("    todo delete 1");
+    println!("    todo delete all\n");
 }
 
 fn main() {
@@ -138,6 +140,14 @@ fn main() {
     } else if command == "delete" {
         if args.len() < 3 {
             println!("Usage: todo delete <id> [id ...]");
+            return;
+        }
+
+        if args[2] == "all" || args[2] == "-1" {
+            tsk.clear();
+            save_tasks(&tsk);
+            println!("🗑  All tasks deleted.");
+            print_list(&tsk);
             return;
         }
 
